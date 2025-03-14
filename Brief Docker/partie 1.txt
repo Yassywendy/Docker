@@ -1,0 +1,42 @@
+Étapes pour construire une image Docker à partir d’un fichier Dockerfile
+Créer un fichier Dockerfile : Écrivez un fichier nommé Dockerfile avec les instructions pour configurer l'image.
+Configurer le contenu du Dockerfile : Spécifiez une image de base avec l'instruction FROM, ajoutez les dépendances, configurez les répertoires de travail, copiez les fichiers nécessaires, et configurez la commande de démarrage.
+Accéder au répertoire contenant le Dockerfile : Dans un terminal, naviguez vers le dossier où se trouve le fichier Dockerfile.
+Construire l'image avec la commande docker build : Exécutez la commande pour construire l'image.
+Rôle de la commande docker build
+La commande docker build permet de créer une image Docker à partir des instructions spécifiées dans un fichier Dockerfile. Elle interprète les commandes du Dockerfile, construit l'image couche par couche, et la stocke dans le système local Docker.
+
+Exemple de syntaxe :
+bash
+Copier le code
+docker build -t mon_image:1.0 .
+-t mon_image:1.0 : Attribue un nom (mon_image) et une version (1.0) à l'image.
+. : Indique que le fichier Dockerfile se trouve dans le répertoire courant.
+Différences entre FROM, WORKDIR, et CMD
+FROM : Définit l'image de base utilisée pour construire l'image Docker. Exemple : FROM python:3.9-slim.
+WORKDIR : Configure le répertoire de travail par défaut à l'intérieur du conteneur. Exemple : WORKDIR /app.
+CMD : Spécifie la commande par défaut qui sera exécutée lorsque le conteneur démarre. Exemple : CMD ["python", "app.py"].
+Importance de spécifier une image de base
+L'image de base fournit un environnement préconfiguré avec les dépendances nécessaires, ce qui simplifie et accélère le processus de création d'image. Cela garantit également la cohérence et la portabilité de l'application à travers les environnements.
+
+Exécution d’un conteneur basé sur une image
+Une fois l'image construite, utilisez la commande docker run pour créer et exécuter un conteneur :
+
+bash
+Copier le code
+docker run --name mon_conteneur -d mon_image:1.0
+--name mon_conteneur : Donne un nom au conteneur.
+-d : Lance le conteneur en mode détaché (en arrière-plan).
+mon_image:1.0 : Spécifie l'image et sa version à utiliser.
+Refléter les modifications d’un fichier source dans le conteneur
+Modifier le fichier source Python localement.
+Reconstruire l’image avec la commande docker build :
+bash
+Copier le code
+docker build -t mon_image:1.1 .
+(Mettez à jour la version de l'image si nécessaire.)
+Redémarrer le conteneur en supprimant l'ancien et en créant un nouveau à partir de l'image mise à jour :
+bash
+Copier le code
+docker rm -f mon_conteneur
+docker run --name mon_conteneur -d mon_image:1.1

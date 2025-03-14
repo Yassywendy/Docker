@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  app:
+    build: ./app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db  # Dépendance explicite à `db`
+    environment:
+      - FLASK_ENV=development  # Peut être changé en 'production' si nécessaire
+    networks:
+      - app_network
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: knights
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/:ro
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+

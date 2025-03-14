@@ -1,0 +1,17 @@
+FROM python:3.9-slim
+
+# Expose le port 5000
+EXPOSE 5000
+
+# Définir le dossier de travail
+WORKDIR /app
+
+# Copier et installer les dépendances
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copier le code de l'application
+COPY app.py .
+
+# Lancer l'application Flask
+CMD ["python", "app.py"]
